@@ -189,12 +189,22 @@ const searchByDemande = async () => {
             </div>
             <div class="card-row">
               <div>
+                <span>Statut</span>
+                <strong>{{ demande.currentStatus ?? '-' }}</strong>
+              </div>
+              <div>
                 <span>Passeport</span>
                 <strong>
                   {{ demande.visaTransformable?.passport?.numero ?? '-' }}
                 </strong>
               </div>
             </div>
+            <RouterLink
+              class="detail-link"
+              :to="`/demandes/${demande.idDemande ?? ''}`"
+            >
+              Voir le detail
+            </RouterLink>
           </article>
         </div>
 
