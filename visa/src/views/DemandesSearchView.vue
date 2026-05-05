@@ -166,12 +166,18 @@ const searchByDemande = async () => {
             v-for="demande in demandes"
             :key="demande.idDemande"
             class="card"
+            :style="demande.isMainResult ? { borderLeft: '4px solid var(--accent)' } : {}"
           >
             <div class="card-top">
               <h3>#{{ demande.idDemande ?? '---' }}</h3>
-              <span class="pill">
-                {{ demande.demandeType?.libelle ?? 'Type inconnu' }}
-              </span>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span v-if="demande.isMainResult" class="pill" style="background: var(--accent); color: white;">
+                  Resultat principal
+                </span>
+                <span class="pill">
+                  {{ demande.demandeType?.libelle ?? 'Type inconnu' }}
+                </span>
+              </div>
             </div>
             <p class="muted">Cree le {{ formatDate(demande.dateCreation) }}</p>
             <div class="card-row">
