@@ -34,6 +34,12 @@ export type DemandeItem = {
     piece?: { idPieceCom?: number; libelle?: string; obligatoire?: boolean }
   }[]
   missingPieces?: { idPieceCom?: number; libelle?: string; obligatoire?: boolean }[]
+  isMainResult?: boolean
+}
+
+export type DemandeByIdResponse = {
+  demande: DemandeItem
+  otherDemandesOfDemandeur?: DemandeItem[]
 }
 
 const apiBase = 'http://localhost:8080'
@@ -76,6 +82,23 @@ export const fetchDemandeById = async (numero: string) => {
   }
 
   const data = await readJsonIfPresent(response)
+  
+  // Handle new response structure with demande and otherDemandesOfDemandeur
+  if (data && typeof data === 'object' && 'demande' in data) {
+    const response_data = data as DemandeByIdResponse
+    const result: DemandeItem[] = []
+    
+    if (response_data.demande) {
+      result.push({ ...response_data.demande, isMainResult: true })
+    }
+    
+    if (response_data.otherDemandesOfDemandeur && Array.isArray(response_data.otherDemandesOfDemandeur)) {
+      result.push(...response_data.otherDemandesOfDemandeur.map(d => ({ ...d, isMainResult: false })))
+    }
+    
+    return result
+  }
+  
   return Array.isArray(data) ? data : data ? [data] : []
 }
 
