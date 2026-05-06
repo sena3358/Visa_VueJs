@@ -42,7 +42,7 @@ export type DemandeByIdResponse = {
   otherDemandesOfDemandeur?: DemandeItem[]
 }
 
-const apiBase = 'http://localhost:8080'
+const apiBase = 'http://192.168.137.1:8080'
 
 const readJsonIfPresent = async (response: Response) => {
   if (response.status === 204) return []
